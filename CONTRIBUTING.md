@@ -59,10 +59,22 @@ This will:
 
 ### 3. Test
 
+**Automated Tests:**
+```bash
+# Run fast validation tests (no Docker required)
+uv run pytest tests/test_notebook.py -v
+
+# Run Docker-based execution tests (requires Docker)
+uv run pytest tests/test_notebook_execution.py -v -m docker
+```
+
+**Manual Testing:**
 1. Upload the generated notebook to Colab
 2. Run all cells
 3. Verify skills, agents, and hooks are installed correctly
 4. Test authentication flow
+
+See [tests/README.md](tests/README.md) for detailed testing documentation.
 
 ## Adding a New Skill
 

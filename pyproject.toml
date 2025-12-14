@@ -23,6 +23,11 @@ classifiers = [
     "Topic :: Scientific/Engineering",
 ]
 
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0.0",
+]
+
 [tool.uv]
 # This is a build tool, not a package - no need to build wheels
 

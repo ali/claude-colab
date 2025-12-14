@@ -1,0 +1,24 @@
+# Dockerfile for testing notebook execution
+# Mimics a Colab-like environment without requiring Google Colab
+
+FROM python:3.11-slim
+
+# Install system dependencies that the notebook expects
+RUN apt-get update && apt-get install -y \
+    socat \
+    bubblewrap \
+    git \
+    curl \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install Jupyter and nbconvert for executing notebooks
+RUN pip install --no-cache-dir \
+    jupyter \
+    nbconvert \
+    ipykernel
+
+# Set working directory
+WORKDIR /workspace
+
+# Default command (can be overridden)
+CMD ["python", "--version"]
