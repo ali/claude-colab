@@ -22,7 +22,7 @@ def notebook_path():
     return Path(__file__).parent.parent / "claude_code_colab_bootstrap.ipynb"
 
 
-@pytest.fixture
+@pytest.fixture(scope="session")
 def docker_image():
     """Docker image name for testing."""
     return "claude-colab-test:latest"
