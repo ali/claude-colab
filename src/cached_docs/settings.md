@@ -2,8 +2,8 @@
 Documentation Source: https://code.claude.com/docs/en/settings.md
 Title: Claude Code Settings
 Description: Configuration reference for settings.json, permissions, hooks, and environment variables
-Downloaded: 2025-12-14T17:28:06.767617
-Last Updated: 2025-12-14T17:28:06.767617
+Downloaded: 2025-12-14T17:45:44.334247
+Last Updated: 2025-12-14T17:45:44.334247
 Check for updates: https://code.claude.com/docs/en/settings.md
 Sitemap: https://code.claude.com/docs/llms.txt
 -->

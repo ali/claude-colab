@@ -1,7 +1,7 @@
 {
   "base_url": "https://code.claude.com/docs/en",
   "sitemap_url": "https://code.claude.com/docs/llms.txt",
-  "last_updated": "2025-12-14T17:28:06.767617",
+  "last_updated": "2025-12-14T17:45:44.334247",
   "docs": [
     {
       "filename": "overview.md",
@@ -32,6 +32,24 @@
       "url": "local",
       "title": "Authentication Guide",
       "description": "Authentication methods and token management (local documentation)"
+    },
+    {
+      "filename": "plugins-reference.md",
+      "url": "https://code.claude.com/docs/en/plugins-reference.md",
+      "title": "Plugins Reference",
+      "description": "Complete technical reference for Claude Code plugin system, including schemas, CLI commands, and component specifications"
+    },
+    {
+      "filename": "cli-reference.md",
+      "url": "https://code.claude.com/docs/en/cli-reference.md",
+      "title": "CLI Reference",
+      "description": "Complete reference for Claude Code command-line interface, including commands and flags"
+    },
+    {
+      "filename": "slash-commands.md",
+      "url": "https://code.claude.com/docs/en/slash-commands.md",
+      "title": "Slash Commands",
+      "description": "Control Claude's behavior during an interactive session with slash commands"
     }
   ]
 }

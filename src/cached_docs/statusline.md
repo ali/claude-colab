@@ -2,8 +2,8 @@
 Documentation Source: https://code.claude.com/docs/en/statusline.md
 Title: Status Line Configuration
 Description: How to create and configure custom status lines
-Downloaded: 2025-12-14T17:28:06.767617
-Last Updated: 2025-12-14T17:28:06.767617
+Downloaded: 2025-12-14T17:45:44.334247
+Last Updated: 2025-12-14T17:45:44.334247
 Check for updates: https://code.claude.com/docs/en/statusline.md
 Sitemap: https://code.claude.com/docs/llms.txt
 -->

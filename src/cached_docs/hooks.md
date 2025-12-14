@@ -2,8 +2,8 @@
 Documentation Source: https://code.claude.com/docs/en/hooks.md
 Title: Hooks Reference
 Description: Documentation for implementing hooks in Claude Code
-Downloaded: 2025-12-14T17:28:06.767617
-Last Updated: 2025-12-14T17:28:06.767617
+Downloaded: 2025-12-14T17:45:44.334247
+Last Updated: 2025-12-14T17:45:44.334247
 Check for updates: https://code.claude.com/docs/en/hooks.md
 Sitemap: https://code.claude.com/docs/llms.txt
 -->
