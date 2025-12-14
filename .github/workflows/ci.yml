@@ -1,0 +1,81 @@
+name: CI
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+jobs:
+  lint-and-format:
+    name: Lint and Format Check
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Install uv
+        uses: astral-sh/setup-uv@v4
+        with:
+          version: "latest"
+      
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      
+      - name: Install dependencies
+        run: uv sync
+      
+      - name: Check formatting with ruff format
+        run: uv run ruff format --check .
+      
+      - name: Lint with ruff check
+        run: uv run ruff check .
+  
+  build:
+    name: Build Notebook
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Install uv
+        uses: astral-sh/setup-uv@v4
+        with:
+          version: "latest"
+      
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      
+      - name: Install dependencies
+        run: uv sync
+      
+      - name: Build notebook
+        run: uv run python build.py
+      
+      - name: Verify notebook was built
+        run: |
+          if [ ! -f claude_code_colab_bootstrap.ipynb ]; then
+            echo "❌ Notebook was not built"
+            exit 1
+          fi
+          echo "✓ Notebook built successfully"
+      
+      - name: Validate notebook JSON
+        run: |
+          python3 -c "import json; json.load(open('claude_code_colab_bootstrap.ipynb'))"
+          echo "✓ Notebook JSON is valid"
+      
+      - name: Check for uncommitted changes
+        run: |
+          if [ -n "$(git status --porcelain)" ]; then
+            echo "❌ Build produced uncommitted changes. Run 'uv run python build.py' locally and commit."
+            git diff
+            exit 1
+          fi
+          echo "✓ No uncommitted changes after build"

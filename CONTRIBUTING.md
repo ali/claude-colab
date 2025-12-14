@@ -168,6 +168,40 @@ The `build.py` script:
    - `{{STATUSLINE_HOOK}}` → statusline script
 7. Writes `claude_code_colab_bootstrap.ipynb`
 
+## Git Hooks
+
+This project uses git hooks to automate code quality checks and issue tracking sync.
+
+### Installation
+
+After cloning the repository, install the hooks:
+
+```bash
+./scripts/install-hooks.sh
+```
+
+This installs:
+- **pre-commit**: Auto-formats Python code with `ruff format` and runs `ruff check --fix`
+- **pre-push**: Ensures bd issue tracking files are committed
+- **post-merge**: Syncs bd database after pulling changes
+
+### What the Hooks Do
+
+**pre-commit**:
+- Flushes pending bd issue changes to JSONL
+- Formats Python files with `ruff format`
+- Auto-fixes linting issues with `ruff check --fix`
+- Re-stages files after auto-fixes
+
+**pre-push**:
+- Prevents pushing uncommitted bd JSONL files
+- Offers interactive `bd sync` if needed
+
+**post-merge**:
+- Imports updated bd JSONL files after `git pull`
+
+See `scripts/hooks/README.md` for detailed documentation.
+
 ## Important Notes
 
 - **Never edit `claude_code_colab_bootstrap.ipynb` directly** - it's generated

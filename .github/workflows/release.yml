@@ -1,0 +1,93 @@
+name: Release
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Tag to release (e.g., v1.0.0)'
+        required: true
+        type: string
+
+jobs:
+  build-and-publish:
+    name: Build and Publish Notebook
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Fetch full history for tags
+      
+      - name: Install uv
+        uses: astral-sh/setup-uv@v4
+        with:
+          version: "latest"
+      
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      
+      - name: Install dependencies
+        run: uv sync
+      
+      - name: Build notebook
+        run: uv run python build.py
+      
+      - name: Get version from tag or workflow input
+        id: get_version
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            VERSION="${{ github.event.inputs.tag }}"
+          else
+            VERSION="${GITHUB_REF#refs/tags/}"
+          fi
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "Building release for version: $VERSION"
+      
+      - name: Create release archive
+        run: |
+          VERSION="${{ steps.get_version.outputs.version }}"
+          ARCHIVE_NAME="claude-code-colab-bootstrap-${VERSION}.ipynb"
+          cp claude_code_colab_bootstrap.ipynb "$ARCHIVE_NAME"
+          echo "archive_name=$ARCHIVE_NAME" >> $GITHUB_OUTPUT
+      
+      - name: Upload notebook to release
+        if: github.event_name == 'release'
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            claude-code-colab-bootstrap-${{ steps.get_version.outputs.version }}.ipynb
+          body: |
+            ## Claude Code Colab Bootstrap ${{ steps.get_version.outputs.version }}
+            
+            ### Download
+            Download the notebook: [claude-code-colab-bootstrap-${{ steps.get_version.outputs.version }}.ipynb](./claude-code-colab-bootstrap-${{ steps.get_version.outputs.version }}.ipynb)
+            
+            ### Quick Start
+            1. Open the notebook in Google Colab
+            2. Get your auth token: `claude login --print-token` (on your local machine)
+            3. Add token to Colab Secrets as `CLAUDE_CODE_TOKEN`
+            4. Run all cells
+            5. Open terminal and run `claude`
+            
+            ### What's Included
+            - Self-bootstrapping installation
+            - Skills and agents for Claude Code
+            - Hooks for markdown formatting and status line
+            - Complete development environment setup
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Upload notebook artifact (workflow_dispatch)
+        if: github.event_name == 'workflow_dispatch'
+        uses: actions/upload-artifact@v4
+        with:
+          name: claude-code-colab-bootstrap-${{ steps.get_version.outputs.version }}
+          path: claude-code-colab-bootstrap-${{ steps.get_version.outputs.version }}.ipynb
+          retention-days: 30
