@@ -113,6 +113,9 @@ Documentation is cached in `src/cached_docs/`:
 - `settings.md` - Settings reference
 - `hooks.md` - Hooks documentation
 - `statusline.md` - Status line configuration
+- `plugins-reference.md` - Plugin system technical reference
+- `cli-reference.md` - CLI command reference
+- `slash-commands.md` - Slash commands reference
 - `auth.md` - Authentication guide
 
 To update docs, use the update script:

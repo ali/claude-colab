@@ -40,6 +40,9 @@ All docs come from: https://code.claude.com/docs/en/
 - `settings.md` - Configuration reference
 - `hooks.md` - Hooks system
 - `statusline.md` - Status line config
+- `plugins-reference.md` - Plugin system technical reference
+- `cli-reference.md` - CLI command reference
+- `slash-commands.md` - Slash commands reference
 - `auth.md` - Local documentation (not downloaded)
 
 ## Metadata Headers

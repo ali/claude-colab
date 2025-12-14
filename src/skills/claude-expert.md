@@ -10,6 +10,9 @@ For detailed information, reference these cached documentation files:
 - @src/cached_docs/hooks.md - Hooks system documentation
 - @src/cached_docs/statusline.md - Status line configuration
 - @src/cached_docs/auth.md - Authentication and token management
+- @src/cached_docs/plugins-reference.md - Complete technical reference for plugin system
+- @src/cached_docs/cli-reference.md - Complete CLI command reference
+- @src/cached_docs/slash-commands.md - Slash commands reference
 
 **To update documentation:**
 - Run `python3 update_docs.py` (local) or use the "Update Documentation" cell in the notebook
