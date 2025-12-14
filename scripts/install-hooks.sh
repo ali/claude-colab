@@ -40,3 +40,4 @@ echo "The following hooks are now active:"
 echo "  - pre-commit: Runs bd sync, ruff format, and ruff check"
 echo "  - pre-push: Ensures bd JSONL files are committed"
 echo "  - post-merge: Syncs bd database after git pull/merge"
+

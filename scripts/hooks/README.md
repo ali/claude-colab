@@ -70,3 +70,4 @@ After modifying hooks in this directory, re-run the install script:
 **Beads hooks failing?**
 - Make sure `bd` is installed and in PATH
 - Check `.beads/config.yaml` for sync-branch configuration
+
