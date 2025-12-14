@@ -1,0 +1,39 @@
+[project]
+name = "claude-code-colab-bootstrap"
+version = "0.1.0"
+description = "Self-bootstrapping notebook that installs Claude Code in Google Colab"
+readme = "README.md"
+requires-python = ">=3.8"
+authors = [
+    {name = "Claude Code Colab Bootstrap Contributors"}
+]
+license = {text = "MIT"}
+keywords = ["claude-code", "colab", "jupyter", "notebook", "bootstrap"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Scientific/Engineering",
+]
+
+[tool.uv]
+# This is a build tool, not a package - no need to build wheels
+
+[tool.ruff]
+line-length = 100
+target-version = "py38"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "N", "W"]
+ignore = ["E501"]  # Line length handled by formatter
+
+[tool.black]
+line-length = 100
+target-version = ["py38"]
