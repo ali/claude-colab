@@ -3,6 +3,9 @@ name: Release
 on:
   release:
     types: [published]
+  push:
+    tags:
+      - "v*"
   workflow_dispatch:
     inputs:
       tag:
@@ -55,7 +58,7 @@ jobs:
           echo "archive_name=$ARCHIVE_NAME" >> $GITHUB_OUTPUT
       
       - name: Upload notebook to release
-        if: github.event_name == 'release'
+        if: github.event_name == 'release' || (github.event_name == 'push' && startsWith(github.ref, 'refs/tags/'))
         uses: softprops/action-gh-release@v2
         with:
           files: |
@@ -90,3 +93,4 @@ jobs:
           name: claude-code-colab-bootstrap-${{ steps.get_version.outputs.version }}
           path: claude-code-colab-bootstrap-${{ steps.get_version.outputs.version }}.ipynb
           retention-days: 30
+
