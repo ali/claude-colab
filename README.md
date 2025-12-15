@@ -6,11 +6,12 @@ Self-bootstrapping notebook that installs Claude Code in Google Colab and sets u
 
 ## Quick Start
 
-1. Open `claude_code_colab_bootstrap.ipynb` in Google Colab
-2. Get your auth token: `claude login --print-token` (on your local machine)
-3. Add token to Colab Secrets as `CLAUDE_CODE_TOKEN`
-4. Run all cells
-5. Open terminal and run `claude`
+1. **Download the notebook** from the [latest release](https://github.com/ali/claude-colab/releases/latest)
+2. Open the downloaded notebook in Google Colab
+3. Get your auth token: `claude login --print-token` (on your local machine)
+4. Add token to Colab Secrets as `CLAUDE_CODE_TOKEN`
+5. Run all cells
+6. Open terminal and run `claude`
 
 ## Development
 
@@ -31,9 +32,16 @@ source .venv/bin/activate  # or: uv run <command>
 
 ### Building
 
+**For project contributors:**
 - Edit source files in `src/`
-- Run `uv run python build.py` to generate the notebook
-- Never edit `claude_code_colab_bootstrap.ipynb` directly
+- Run `uv run python build.py` to generate the notebook in `dist/`
+- The built notebook is only committed during releases (see `.github/workflows/release.yml`)
+- Contributors should edit source files, not the generated notebook
+
+**For end users:**
+- Feel free to edit the downloaded notebook however you want!
+- You can modify it manually or have Claude edit it while running inside the notebook
+- The notebook is designed to be self-modifying and interactive
 
 ### Updating Documentation
 

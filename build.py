@@ -110,7 +110,9 @@ def build_notebook():
             ]
 
     # Write final notebook
-    output_path = Path("claude_code_colab_bootstrap.ipynb")
+    output_dir = Path("dist")
+    output_dir.mkdir(exist_ok=True)
+    output_path = output_dir / "claude_code_colab_bootstrap.ipynb"
     with open(output_path, "w") as f:
         json.dump(notebook, f, indent=2)
 

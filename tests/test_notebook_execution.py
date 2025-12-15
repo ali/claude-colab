@@ -20,7 +20,7 @@ import pytest
 @pytest.fixture
 def notebook_path():
     """Path to the built notebook."""
-    return Path(__file__).parent.parent / "claude_code_colab_bootstrap.ipynb"
+    return Path(__file__).parent.parent / "dist" / "claude_code_colab_bootstrap.ipynb"
 
 
 @pytest.fixture(scope="session")

@@ -14,7 +14,8 @@ This project uses a **source-based build system** where content is maintained in
 │   ├── guide.md         # User guide content
 │   └── bootstrap_template.ipynb  # Notebook template with placeholders
 ├── build.py             # Build script
-├── claude_code_colab_bootstrap.ipynb  # Generated (do not edit directly)
+├── dist/                # Build output directory (gitignored)
+│   └── claude_code_colab_bootstrap.ipynb  # Generated notebook (released via GitHub Releases)
 └── claude_code_colab_DEBUG.ipynb      # Debug variant
 ```
 
@@ -216,10 +217,16 @@ See `scripts/hooks/README.md` for detailed documentation.
 
 ## Important Notes
 
-- **Never edit `claude_code_colab_bootstrap.ipynb` directly** - it's generated
+**For Project Contributors:**
+- **Never edit the generated notebook directly** - it's auto-generated from source files
 - Always edit source files in `src/` and rebuild
 - The template uses placeholders that must match exactly (case-sensitive)
 - String escaping is handled automatically by the build script
+
+**Note for End Users:**
+- End users who download the notebook are free to edit it however they want
+- The notebook is designed to be interactive and self-modifying
+- Users can have Claude edit the notebook while running inside it
 
 ## Debugging Build Issues
 

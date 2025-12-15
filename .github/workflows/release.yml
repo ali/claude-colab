@@ -51,7 +51,7 @@ jobs:
         run: |
           VERSION="${{ steps.get_version.outputs.version }}"
           ARCHIVE_NAME="claude-code-colab-bootstrap-${VERSION}.ipynb"
-          cp claude_code_colab_bootstrap.ipynb "$ARCHIVE_NAME"
+          cp dist/claude_code_colab_bootstrap.ipynb "$ARCHIVE_NAME"
           echo "archive_name=$ARCHIVE_NAME" >> $GITHUB_OUTPUT
       
       - name: Upload notebook to release
