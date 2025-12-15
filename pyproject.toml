@@ -35,6 +35,7 @@ dev = [
 [tool.ruff]
 line-length = 100
 target-version = "py38"
+exclude = ["*.ipynb"]  # Notebooks are JSON with embedded Python, not pure Python files
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "N", "W"]
