@@ -9,13 +9,13 @@ Claude Code supports multiple authentication methods:
 Claude Code uses OAuth tokens for authentication. You can obtain a token using:
 
 ```bash
-claude login --print-token
+claude setup-token
 ```
 
 This will:
 1. Open a browser for OAuth authentication
 2. Print the token to stdout
-3. Save the token to `~/.claude.json` for future use
+3. Save the token locally for future use
 
 ### API Key (For Headless/CI Use)
 
@@ -54,15 +54,21 @@ In Google Colab, you can:
 
 1. Get token from your local machine:
    ```bash
-   claude login --print-token
+   claude setup-token
    ```
 
 2. Save to Colab Secrets:
    - Click the key icon in Colab sidebar
-   - Add secret: `CLAUDE_CODE_TOKEN` (or `CLAUDE_CODE_OAUTH_TOKEN`)
+   - Add secret: `CLAUDE_CODE_OAUTH_TOKEN` (recommended)
    - Paste the token value
 
-3. The notebook will read the secret and configure authentication automatically.
+3. Verify Colab can read it:
+   ```python
+   from google.colab import userdata
+   userdata.get("CLAUDE_CODE_OAUTH_TOKEN")
+   ```
+
+4. The notebook will read the secret and configure authentication automatically.
 
 ### Token Format
 
@@ -73,6 +79,6 @@ claude_oauth_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
 ### Troubleshooting
 
-- **Token expired**: Re-run `claude login --print-token` to get a new token
+- **Token expired**: Re-run `claude setup-token` to get a new token
 - **Token not found**: Check `~/.claude.json` or re-authenticate
 - **Colab authentication fails**: Verify the secret name matches what the notebook expects

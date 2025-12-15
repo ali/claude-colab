@@ -1,21 +1,30 @@
 # claude-colab
 
-Claude Code for Google Colab — bootstrap a notebook, bring your own repo/notebook, and let Claude maintain the environment (and the notebook) as it runs.
+Turn Google Colab into a Claude Code-powered dev box.
 
 `claude-colab` ships a self-bootstrapping Colab notebook that installs Claude Code and sets up a complete development environment with skills, agents, hooks, and a status line. It’s built for a few high-value workflows:
 
 - **Bootstrap fast**: turn a fresh Colab runtime into a working `claude` terminal in minutes.
 - **Edit real projects**: upload a repo/notebook (or `git clone`) and have Claude edit files and run commands directly in Colab.
-- **Self-improve**: the notebook copies its own source into the workspace and includes customization skills plus a cached Claude Code docs bundle, so Claude can customize and maintain the setup while it’s running.
+- **Self-improve**: the notebook copies its own source into the workspace (`_bootstrap_source.ipynb`) and includes customization skills; it can also cache Claude Code docs into `src/cached_docs/` so Claude can reference them while working.
+
+This is especially useful when you want Claude close to your data/GPU, or you want a shareable, disposable environment that still supports real project work.
 
 ## Quick Start
 
 1. **Download the notebook** from the [latest release](https://github.com/ali/claude-colab/releases/latest)
 2. Open the downloaded notebook in Google Colab
-3. Get your auth token: `claude login --print-token` (anywhere you have Claude Code installed)
-4. Add the token to Colab Secrets as `CLAUDE_CODE_TOKEN` (recommended; don’t paste it into a cell)
+3. Get a long-lived OAuth token: `claude setup-token` (anywhere you have Claude Code installed)
+4. Add the token to Colab Secrets as `CLAUDE_CODE_OAUTH_TOKEN` (don’t paste it into a cell)
+
+   You can confirm Colab can read it with:
+   ```python
+   from google.colab import userdata
+   userdata.get("CLAUDE_CODE_OAUTH_TOKEN")
+   ```
 5. Run all cells
-6. Open terminal and run `claude`
+6. Copy the bootstrap prompt printed near the end
+7. Open terminal and run `claude`, then paste the prompt
 
 ## Common Workflows
 
@@ -29,6 +38,13 @@ Claude Code for Google Colab — bootstrap a notebook, bring your own repo/noteb
 
 - Skills: `customize`, `ipynb`, `skill-builder`, `claude-expert`
 - Agents: `notebook-doctor`, `colab`
+
+### First Prompts to Try
+
+- `/init` to generate `CLAUDE.md` for the current workspace
+- “Scan this workspace, run the test suite, and fix any failures”
+- “Open `_bootstrap_source.ipynb` and add a cell that installs <package>”
+- “Use the `customize` skill to add a custom slash command for <task>”
 
 For more details, see `src/guide.md`.
 

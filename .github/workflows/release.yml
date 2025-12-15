@@ -71,8 +71,8 @@ jobs:
             
             ### Quick Start
             1. Open the notebook in Google Colab
-            2. Get your auth token: `claude login --print-token` (on your local machine)
-            3. Add token to Colab Secrets as `CLAUDE_CODE_TOKEN`
+            2. Get a long-lived OAuth token: `claude setup-token` (anywhere you have Claude Code installed)
+            3. Add token to Colab Secrets as `CLAUDE_CODE_OAUTH_TOKEN`
             4. Run all cells
             5. Open terminal and run `claude`
             
@@ -93,4 +93,3 @@ jobs:
           name: claude-code-colab-bootstrap-${{ steps.get_version.outputs.version }}
           path: claude-code-colab-bootstrap-${{ steps.get_version.outputs.version }}.ipynb
           retention-days: 30
-
