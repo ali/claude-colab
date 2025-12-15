@@ -106,7 +106,7 @@ export FORCE_COLOR=1
 
 ### /doctor or /status hangs
 **Cause:** Interactive UI in headless terminal
-**Workaround:** Use `/cost` instead, or use headless mode:
+**Workaround:** Use `/usage` instead (status tab works), or use headless mode:
 ```bash
 claude -p "hello" --output-format text
 ```

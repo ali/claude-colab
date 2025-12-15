@@ -19,7 +19,7 @@
 | `/clear` | Reset context |
 | `/compact` | Reduce tokens |
 | `/model opus` | Switch model |
-| `/cost` | Token usage |
+| `/usage` | Token usage |
 
 ## Skills Available
 - **customize** — Customize this notebook

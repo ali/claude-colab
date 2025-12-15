@@ -27,7 +27,7 @@ For detailed information, reference these cached documentation files:
 | `/init` | Generate CLAUDE.md from codebase |
 | `/clear` | Reset conversation context |
 | `/compact [focus]` | Summarize to save tokens |
-| `/cost` | Show token usage and costs |
+| `/usage` | Show token usage and costs |
 | `/model <name>` | Switch model (sonnet, opus, haiku) |
 | `/memory` | Edit CLAUDE.md files |
 | `/doctor` | Diagnose installation issues |
@@ -297,14 +297,14 @@ claude --version
 
 # Check what Claude sees
 /status
-/cost
+/usage
 ```
 
 ## Colab-Specific Notes
 
 **In Colab's headless terminal:**
 - `/doctor` and `/status` may hang (interactive UI issues)
-- Use `/cost` to verify Claude is working
+- Use `/usage` to verify Claude is working (note: usage tab may fail with setup-token due to missing user:profile scope)
 - Use `claude -p "prompt"` for scripted testing
 
 **PATH setup:**
