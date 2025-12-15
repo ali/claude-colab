@@ -16,6 +16,5 @@
     "jupyter",
     "claude-code",
     "bootstrap"
-  ],
-  "hooks": "./hooks/hooks.json"
+  ]
 }
