@@ -10,7 +10,6 @@ from pathlib import Path
 
 import pytest
 
-
 # Placeholders that should be replaced during build
 EXPECTED_PLACEHOLDERS = [
     "{{GUIDE_CONTENT}}",

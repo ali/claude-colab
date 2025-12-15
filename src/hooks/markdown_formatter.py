@@ -5,9 +5,9 @@ Fixes missing language tags and spacing issues while preserving code content.
 """
 
 import json
-import sys
-import re
 import os
+import re
+import sys
 
 
 def detect_language(code):
@@ -19,7 +19,7 @@ def detect_language(code):
         try:
             json.loads(s)
             return "json"
-        except:
+        except Exception:
             pass
 
     # Python detection

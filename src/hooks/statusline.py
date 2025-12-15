@@ -5,8 +5,8 @@ Displays model, working directory, and session info.
 """
 
 import json
-import sys
 import os
+import sys
 
 try:
     # Read JSON input from stdin
@@ -29,7 +29,7 @@ try:
 
     print(status)
 
-except Exception as e:
+except Exception:
     # Fallback if JSON parsing fails
     cwd = os.getcwd()
     cwd_short = os.path.basename(cwd) if cwd != "/" else "/"

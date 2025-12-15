@@ -38,7 +38,7 @@ target-version = "py38"
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "N", "W"]
-ignore = ["E501"]  # Line length handled by formatter
+ignore = ["E501", "E402", "F821", "W291", "W293"]  # E402/F821: notebooks/templates, W291/W293: whitespace in notebooks
 
 [tool.ruff.format]
 # Ruff formatter configuration (replaces black)

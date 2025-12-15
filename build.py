@@ -7,7 +7,6 @@ to generate claude_code_colab_bootstrap.ipynb
 """
 
 import json
-import os
 from pathlib import Path
 
 
@@ -117,7 +116,7 @@ def build_notebook():
     print(f"  - {len(skills)} skills")
     print(f"  - {len(agents)} agents")
     print(f"  - Guide: {len(guide_content)} chars")
-    print(f"  - Hooks: markdown_formatter, statusline")
+    print("  - Hooks: markdown_formatter, statusline")
 
 
 if __name__ == "__main__":

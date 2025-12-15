@@ -175,12 +175,12 @@ def test_notebook_executes_in_docker(notebook_path, build_docker_image, docker_i
 
         # Verify execution was successful
         # The main indicator is that cells executed without errors
-        print(f"✓ Notebook executed successfully")
+        print("✓ Notebook executed successfully")
         print(f"  - {len(executed_cells)} code cells executed")
         if env_vars:
-            print(f"  - Tested with authentication token")
+            print("  - Tested with authentication token")
         else:
-            print(f"  - Tested without authentication token (optional)")
+            print("  - Tested without authentication token (optional)")
 
         # Optional: Check that some expected output was produced
         # (e.g., print statements from the notebook)

@@ -7,7 +7,6 @@ Can be run locally or in Colab.
 """
 
 import json
-import os
 import subprocess
 import sys
 from datetime import datetime
