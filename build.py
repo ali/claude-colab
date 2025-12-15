@@ -53,14 +53,14 @@ def build_notebook():
     # Read skills
     skills_dir = Path("src/skills")
     skills = {}
-    for skill_file in skills_dir.glob("*.md"):
+    for skill_file in sorted(skills_dir.glob("*.md")):  # Sort for deterministic order
         skill_name = skill_file.stem
         skills[skill_name] = read_file(skill_file)
 
     # Read agents
     agents_dir = Path("src/agents")
     agents = {}
-    for agent_file in agents_dir.glob("*.md"):
+    for agent_file in sorted(agents_dir.glob("*.md")):  # Sort for deterministic order
         agent_name = agent_file.stem
         agents[agent_name] = read_file(agent_file)
 
@@ -68,7 +68,9 @@ def build_notebook():
     def dict_to_python_string(d):
         """Convert a dict to a Python string representation."""
         items = []
-        for key, value in d.items():
+        # Sort keys for deterministic output
+        for key in sorted(d.keys()):
+            value = d[key]
             # Escape the value for Python string
             escaped_value = escape_for_python_string(value)
             items.append(f"'{key}': '{escaped_value}'")
