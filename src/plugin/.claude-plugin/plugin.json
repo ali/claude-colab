@@ -1,0 +1,21 @@
+{
+  "name": "colab-toolkit",
+  "version": "0.1.2",
+  "description": "Complete toolkit for running Claude Code in Google Colab",
+  "author": {
+    "name": "claude-colab",
+    "url": "https://github.com/ali/claude-colab"
+  },
+  "repository": "https://github.com/ali/claude-colab",
+  "homepage": "https://github.com/ali/claude-colab#readme",
+  "license": "MIT",
+  "keywords": [
+    "colab",
+    "google-colab",
+    "notebook",
+    "jupyter",
+    "claude-code",
+    "bootstrap"
+  ],
+  "hooks": "./hooks/hooks.json"
+}

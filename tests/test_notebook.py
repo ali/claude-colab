@@ -1,7 +1,10 @@
 """
 Tests for the built notebook.
 
-Validates structure, content, and optionally executes the notebook.
+Validates structure, content, and plugin marketplace configuration.
+
+The new architecture uses the plugin system - skills, agents, hooks, and
+commands are provided by the colab-toolkit plugin from this repo's marketplace.
 """
 
 import json
@@ -12,24 +15,16 @@ import pytest
 
 # Placeholders that should be replaced during build
 EXPECTED_PLACEHOLDERS = [
-    "{{GUIDE_CONTENT}}",
-    "{{MARKDOWN_FORMATTER_HOOK}}",
-    "{{STATUSLINE_HOOK}}",
-    "{{UPDATE_DOCS_SCRIPT}}",
-    "{{DOCS_MANIFEST_JSON}}",
-    "{{SKILLS_JSON}}",
-    "{{AGENTS_JSON}}",
+    "{{BOOTSTRAP_VERSION}}",
+    "{{GITHUB_REPO}}",
 ]
 
-# Required content patterns that should exist in the built notebook
+# Required content patterns for the new plugin-based architecture
 REQUIRED_CONTENT_PATTERNS = [
-    (r"GUIDE\s*=\s*\"\"\"", "Guide content variable"),
-    (r"SKILLS_JSON\s*=\s*'''", "Skills JSON string"),
-    (r"AGENTS_JSON\s*=\s*'''", "Agents JSON string"),
-    (r"markdown_formatter\s*=\s*'''", "Markdown formatter hook"),
-    (r"statusline_script\s*=\s*'''", "Statusline hook"),
-    (r"update_docs_script\s*=\s*'''", "Update docs script"),
-    (r"docs_manifest\s*=\s*\{", "Docs manifest"),
+    (r"BOOTSTRAP_VERSION\s*=\s*\"[\d.]+\"", "Bootstrap version"),
+    (r"extraKnownMarketplaces", "Marketplace configuration"),
+    (r"enabledPlugins", "Enabled plugins"),
+    (r"colab-toolkit@claude-colab", "Plugin reference"),
 ]
 
 
@@ -108,8 +103,8 @@ class TestNotebookContent:
                 f"Required content not found: {description} (pattern: {pattern})"
             )
 
-    def test_skills_json_not_empty(self, notebook):
-        """Test that skills JSON is populated."""
+    def test_marketplace_configuration(self, notebook):
+        """Test that marketplace is properly configured."""
         code_sources = []
         for cell in notebook["cells"]:
             if cell["cell_type"] == "code":
@@ -118,17 +113,13 @@ class TestNotebookContent:
 
         all_code = "\n".join(code_sources)
 
-        # Find SKILLS_JSON = '''...''' pattern
-        skills_match = re.search(r"SKILLS_JSON\s*=\s*'''(.+?)'''", all_code, re.DOTALL)
-        assert skills_match, "SKILLS_JSON not found"
+        # Check marketplace config structure
+        assert "extraKnownMarketplaces" in all_code, "extraKnownMarketplaces not found"
+        assert "claude-colab" in all_code, "claude-colab marketplace not found"
+        assert "github" in all_code, "GitHub source type not found"
 
-        skills_json_str = skills_match.group(1)
-        # Check it's not empty and looks like JSON
-        assert skills_json_str.strip().startswith("{"), "SKILLS_JSON should be valid JSON"
-        assert len(skills_json_str) > 10, "SKILLS_JSON should not be empty"
-
-    def test_agents_json_not_empty(self, notebook):
-        """Test that agents JSON is populated."""
+    def test_plugin_enabled(self, notebook):
+        """Test that colab-toolkit plugin is enabled."""
         code_sources = []
         for cell in notebook["cells"]:
             if cell["cell_type"] == "code":
@@ -137,17 +128,11 @@ class TestNotebookContent:
 
         all_code = "\n".join(code_sources)
 
-        # Find AGENTS_JSON = '''...''' pattern
-        agents_match = re.search(r"AGENTS_JSON\s*=\s*'''(.+?)'''", all_code, re.DOTALL)
-        assert agents_match, "AGENTS_JSON not found"
+        assert "enabledPlugins" in all_code, "enabledPlugins not found"
+        assert "colab-toolkit@claude-colab" in all_code, "Plugin not enabled"
 
-        agents_json_str = agents_match.group(1)
-        # Check it's not empty and looks like JSON
-        assert agents_json_str.strip().startswith("{"), "AGENTS_JSON should be valid JSON"
-        assert len(agents_json_str) > 10, "AGENTS_JSON should not be empty"
-
-    def test_guide_content_not_empty(self, notebook):
-        """Test that guide content is populated."""
+    def test_version_is_valid(self, notebook):
+        """Test that version number is valid semver."""
         code_sources = []
         for cell in notebook["cells"]:
             if cell["cell_type"] == "code":
@@ -156,14 +141,18 @@ class TestNotebookContent:
 
         all_code = "\n".join(code_sources)
 
-        # Find GUIDE = """...""" pattern
-        guide_match = re.search(r'GUIDE\s*=\s*"""(.*?)"""', all_code, re.DOTALL)
-        assert guide_match, "GUIDE content not found"
-        guide_content = guide_match.group(1)
-        assert len(guide_content.strip()) > 0, "GUIDE content should not be empty"
+        # Find version pattern
+        version_match = re.search(r'BOOTSTRAP_VERSION\s*=\s*"(\d+\.\d+\.\d+)"', all_code)
+        assert version_match, "BOOTSTRAP_VERSION not found or invalid"
 
-    def test_hooks_are_present(self, notebook):
-        """Test that hook scripts are present."""
+        version = version_match.group(1)
+        parts = version.split(".")
+        assert len(parts) == 3, "Version should be semver (X.Y.Z)"
+        for part in parts:
+            assert part.isdigit(), "Version parts should be numeric"
+
+    def test_github_repo_is_valid(self, notebook):
+        """Test that GitHub repo is valid."""
         code_sources = []
         for cell in notebook["cells"]:
             if cell["cell_type"] == "code":
@@ -172,16 +161,72 @@ class TestNotebookContent:
 
         all_code = "\n".join(code_sources)
 
-        # Check for markdown formatter
-        markdown_match = re.search(r"markdown_formatter\s*=\s*'''(.*?)'''", all_code, re.DOTALL)
-        assert markdown_match, "markdown_formatter hook not found"
-        assert len(markdown_match.group(1).strip()) > 0, (
-            "markdown_formatter hook should not be empty"
-        )
+        # Check for owner/repo pattern
+        repo_match = re.search(r'"repo":\s*"([^/]+/[^"]+)"', all_code)
+        assert repo_match, "GitHub repo not found in proper format (owner/repo)"
 
-        # Check for statusline
-        statusline_match = re.search(r"statusline_script\s*=\s*'''(.*?)'''", all_code, re.DOTALL)
-        assert statusline_match, "statusline_script hook not found"
-        assert len(statusline_match.group(1).strip()) > 0, (
-            "statusline_script hook should not be empty"
-        )
+        repo = repo_match.group(1)
+        assert "/" in repo, "Repo should be in owner/repo format"
+
+
+class TestPluginStructure:
+    """Test that the plugin structure exists and is valid."""
+
+    def test_plugin_json_exists(self):
+        """Test that plugin.json exists."""
+        plugin_path = Path(__file__).parent.parent / "src" / "plugin" / ".claude-plugin" / "plugin.json"
+        assert plugin_path.exists(), f"Plugin manifest not found at {plugin_path}"
+
+    def test_plugin_json_is_valid(self):
+        """Test that plugin.json is valid JSON with required fields."""
+        plugin_path = Path(__file__).parent.parent / "src" / "plugin" / ".claude-plugin" / "plugin.json"
+        with open(plugin_path, "r") as f:
+            plugin = json.load(f)
+
+        assert "name" in plugin, "Plugin missing 'name' field"
+        assert "version" in plugin, "Plugin missing 'version' field"
+        assert plugin["name"] == "colab-toolkit", "Plugin name should be 'colab-toolkit'"
+
+    def test_marketplace_json_exists(self):
+        """Test that marketplace.json exists."""
+        marketplace_path = Path(__file__).parent.parent / ".claude-plugin" / "marketplace.json"
+        assert marketplace_path.exists(), f"Marketplace manifest not found at {marketplace_path}"
+
+    def test_marketplace_json_is_valid(self):
+        """Test that marketplace.json is valid JSON with required fields."""
+        marketplace_path = Path(__file__).parent.parent / ".claude-plugin" / "marketplace.json"
+        with open(marketplace_path, "r") as f:
+            marketplace = json.load(f)
+
+        assert "name" in marketplace, "Marketplace missing 'name' field"
+        assert "plugins" in marketplace, "Marketplace missing 'plugins' field"
+        assert len(marketplace["plugins"]) > 0, "Marketplace should have at least one plugin"
+
+    def test_skills_exist(self):
+        """Test that skills directory has content."""
+        skills_dir = Path(__file__).parent.parent / "src" / "plugin" / "skills"
+        assert skills_dir.exists(), "Skills directory not found"
+        skills = list(skills_dir.glob("*/SKILL.md"))
+        assert len(skills) > 0, "No skills found in plugin"
+
+    def test_agents_exist(self):
+        """Test that agents directory has content."""
+        agents_dir = Path(__file__).parent.parent / "src" / "plugin" / "agents"
+        assert agents_dir.exists(), "Agents directory not found"
+        agents = list(agents_dir.glob("*.md"))
+        assert len(agents) > 0, "No agents found in plugin"
+
+    def test_commands_exist(self):
+        """Test that commands directory has content."""
+        commands_dir = Path(__file__).parent.parent / "src" / "plugin" / "commands"
+        assert commands_dir.exists(), "Commands directory not found"
+        commands = list(commands_dir.glob("*.md"))
+        assert len(commands) > 0, "No commands found in plugin"
+
+    def test_hooks_json_exists(self):
+        """Test that hooks.json exists and is valid."""
+        hooks_path = Path(__file__).parent.parent / "src" / "plugin" / "hooks" / "hooks.json"
+        assert hooks_path.exists(), "hooks.json not found"
+        with open(hooks_path, "r") as f:
+            hooks = json.load(f)
+        assert "hooks" in hooks, "hooks.json missing 'hooks' key"

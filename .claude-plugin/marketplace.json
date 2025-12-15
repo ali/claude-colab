@@ -1,0 +1,16 @@
+{
+  "name": "claude-colab",
+  "description": "Plugin marketplace for Claude Code in Google Colab",
+  "owner": {
+    "name": "claude-colab",
+    "url": "https://github.com/ali/claude-colab"
+  },
+  "plugins": [
+    {
+      "name": "colab-toolkit",
+      "source": "./src/plugin",
+      "description": "Complete toolkit for running Claude Code in Google Colab - includes skills, agents, hooks, and commands",
+      "version": "0.1.2"
+    }
+  ]
+}
