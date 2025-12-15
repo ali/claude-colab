@@ -23,17 +23,13 @@ BLOCKED_PATTERNS = [
     (r"rm\s+(-[rfvd]+\s+)*/([\s;|&]|$)", "Refusing to delete root directory /"),
     (r"rm\s+(-[rfvd]+\s+)*~([\s;|&/]|$)", "Refusing to delete home directory ~"),
     (r"rm\s+(-[rfvd]+\s+)*/\*", "Refusing to delete /*"),
-
     # Delete Google Drive
     (r"rm\s+(-[rfvd]+\s+)*/content/drive", "Refusing to delete Google Drive mount"),
-
     # Fork bombs and system killers
     (r":\(\)\s*\{\s*:\s*\|\s*:\s*&\s*\}\s*;", "Fork bomb detected"),
     (r"kill\s+(-\d+\s+)*(1|init)\b", "Refusing to kill init process"),
-
     # Dangerous dd commands
     (r"dd\s+.*of=/dev/(sd[a-z]|nvme|hd[a-z])", "Refusing to write directly to disk device"),
-
     # Chmod dangerous
     (r"chmod\s+(-[Rrf]+\s+)*777\s+/($|\s)", "Refusing chmod 777 on root"),
 ]
@@ -97,10 +93,7 @@ def main():
 
         if exit_code != 0 and message:
             # Output as JSON for Claude Code to display
-            result = {
-                "status": "blocked",
-                "message": message
-            }
+            result = {"status": "blocked", "message": message}
             print(json.dumps(result))
 
         sys.exit(exit_code)

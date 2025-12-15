@@ -174,12 +174,16 @@ class TestPluginStructure:
 
     def test_plugin_json_exists(self):
         """Test that plugin.json exists."""
-        plugin_path = Path(__file__).parent.parent / "src" / "plugin" / ".claude-plugin" / "plugin.json"
+        plugin_path = (
+            Path(__file__).parent.parent / "src" / "plugin" / ".claude-plugin" / "plugin.json"
+        )
         assert plugin_path.exists(), f"Plugin manifest not found at {plugin_path}"
 
     def test_plugin_json_is_valid(self):
         """Test that plugin.json is valid JSON with required fields."""
-        plugin_path = Path(__file__).parent.parent / "src" / "plugin" / ".claude-plugin" / "plugin.json"
+        plugin_path = (
+            Path(__file__).parent.parent / "src" / "plugin" / ".claude-plugin" / "plugin.json"
+        )
         with open(plugin_path, "r") as f:
             plugin = json.load(f)
 
