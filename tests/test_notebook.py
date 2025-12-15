@@ -17,15 +17,15 @@ EXPECTED_PLACEHOLDERS = [
     "{{STATUSLINE_HOOK}}",
     "{{UPDATE_DOCS_SCRIPT}}",
     "{{DOCS_MANIFEST_JSON}}",
-    "{{SKILLS_DICT}}",
-    "{{AGENTS_DICT}}",
+    "{{SKILLS_JSON}}",
+    "{{AGENTS_JSON}}",
 ]
 
 # Required content patterns that should exist in the built notebook
 REQUIRED_CONTENT_PATTERNS = [
     (r"GUIDE\s*=\s*\"\"\"", "Guide content variable"),
-    (r"SKILLS\s*=\s*\{", "Skills dictionary"),
-    (r"AGENTS\s*=\s*\{", "Agents dictionary"),
+    (r"SKILLS_JSON\s*=\s*'''", "Skills JSON string"),
+    (r"AGENTS_JSON\s*=\s*'''", "Agents JSON string"),
     (r"markdown_formatter\s*=\s*'''", "Markdown formatter hook"),
     (r"statusline_script\s*=\s*'''", "Statusline hook"),
     (r"update_docs_script\s*=\s*'''", "Update docs script"),
@@ -108,8 +108,8 @@ class TestNotebookContent:
                 f"Required content not found: {description} (pattern: {pattern})"
             )
 
-    def test_skills_dict_not_empty(self, notebook):
-        """Test that skills dictionary is populated."""
+    def test_skills_json_not_empty(self, notebook):
+        """Test that skills JSON is populated."""
         code_sources = []
         for cell in notebook["cells"]:
             if cell["cell_type"] == "code":
@@ -118,19 +118,17 @@ class TestNotebookContent:
 
         all_code = "\n".join(code_sources)
 
-        # Find SKILLS = {...} pattern
-        skills_match = re.search(r"SKILLS\s*=\s*(\{.*?\})", all_code, re.DOTALL)
-        assert skills_match, "SKILLS dictionary not found"
+        # Find SKILLS_JSON = '''...''' pattern
+        skills_match = re.search(r"SKILLS_JSON\s*=\s*'''(.+?)'''", all_code, re.DOTALL)
+        assert skills_match, "SKILLS_JSON not found"
 
-        # Try to evaluate it (safely)
-        skills_str = skills_match.group(1)
-        # Check it's not just an empty dict
-        assert skills_str.strip() != "{}", "SKILLS dictionary should not be empty"
-        # Check it has content (at least one key-value pair)
-        assert ":" in skills_str, "SKILLS dictionary should contain skills"
+        skills_json_str = skills_match.group(1)
+        # Check it's not empty and looks like JSON
+        assert skills_json_str.strip().startswith("{"), "SKILLS_JSON should be valid JSON"
+        assert len(skills_json_str) > 10, "SKILLS_JSON should not be empty"
 
-    def test_agents_dict_not_empty(self, notebook):
-        """Test that agents dictionary is populated."""
+    def test_agents_json_not_empty(self, notebook):
+        """Test that agents JSON is populated."""
         code_sources = []
         for cell in notebook["cells"]:
             if cell["cell_type"] == "code":
@@ -139,14 +137,14 @@ class TestNotebookContent:
 
         all_code = "\n".join(code_sources)
 
-        # Find AGENTS = {...} pattern
-        agents_match = re.search(r"AGENTS\s*=\s*(\{.*?\})", all_code, re.DOTALL)
-        assert agents_match, "AGENTS dictionary not found"
+        # Find AGENTS_JSON = '''...''' pattern
+        agents_match = re.search(r"AGENTS_JSON\s*=\s*'''(.+?)'''", all_code, re.DOTALL)
+        assert agents_match, "AGENTS_JSON not found"
 
-        # Check it's not just an empty dict
-        agents_str = agents_match.group(1)
-        assert agents_str.strip() != "{}", "AGENTS dictionary should not be empty"
-        assert ":" in agents_str, "AGENTS dictionary should contain agents"
+        agents_json_str = agents_match.group(1)
+        # Check it's not empty and looks like JSON
+        assert agents_json_str.strip().startswith("{"), "AGENTS_JSON should be valid JSON"
+        assert len(agents_json_str) > 10, "AGENTS_JSON should not be empty"
 
     def test_guide_content_not_empty(self, notebook):
         """Test that guide content is populated."""
