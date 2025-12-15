@@ -15,7 +15,7 @@ This project uses a **source-based build system** where content is maintained in
 │   └── bootstrap_template.ipynb  # Notebook template with placeholders
 ├── build.py             # Build script
 ├── dist/                # Build output directory (gitignored)
-│   └── claude_code_colab_bootstrap.ipynb  # Generated notebook (released via GitHub Releases)
+│   └── claude-colab.ipynb  # Generated notebook (released via GitHub Releases)
 └── claude_code_colab_DEBUG.ipynb      # Debug variant
 ```
 
@@ -56,7 +56,7 @@ python3 build.py
 This will:
 - Read all source files from `src/`
 - Inject content into the template
-- Generate `claude_code_colab_bootstrap.ipynb`
+- Generate `claude-colab.ipynb`
 
 ### 3. Test
 
@@ -179,7 +179,7 @@ The `build.py` script:
    - `{{AGENTS_DICT}}` → Python dict of agents
    - `{{MARKDOWN_FORMATTER_HOOK}}` → markdown formatter script
    - `{{STATUSLINE_HOOK}}` → statusline script
-7. Writes `claude_code_colab_bootstrap.ipynb`
+7. Writes `claude-colab.ipynb`
 
 ## Git Hooks
 

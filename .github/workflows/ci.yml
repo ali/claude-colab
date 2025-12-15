@@ -40,7 +40,7 @@ jobs:
       
       - name: Verify notebook was built
         run: |
-          if [ ! -f dist/claude_code_colab_bootstrap.ipynb ]; then
+          if [ ! -f dist/claude-colab.ipynb ]; then
             echo "❌ Notebook was not built"
             exit 1
           fi
@@ -48,7 +48,7 @@ jobs:
       
       - name: Validate notebook JSON
         run: |
-          python3 -c "import json; json.load(open('dist/claude_code_colab_bootstrap.ipynb'))"
+          python3 -c "import json; json.load(open('dist/claude-colab.ipynb'))"
           echo "✓ Notebook JSON is valid"
       
       - name: Run notebook tests
@@ -67,7 +67,7 @@ jobs:
         uses: actions/upload-artifact@v6
         with:
           name: notebook
-          path: dist/claude_code_colab_bootstrap.ipynb
+          path: dist/claude-colab.ipynb
           retention-days: 1
   
   test-execution:

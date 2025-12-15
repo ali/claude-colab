@@ -3,7 +3,7 @@
 Build script to compile the bootstrap notebook from source files.
 
 Reads src/ directory and injects content into src/bootstrap_template.ipynb
-to generate claude_code_colab_bootstrap.ipynb
+to generate claude-colab.ipynb
 """
 
 import json
@@ -112,7 +112,7 @@ def build_notebook():
     # Write final notebook
     output_dir = Path("dist")
     output_dir.mkdir(exist_ok=True)
-    output_path = output_dir / "claude_code_colab_bootstrap.ipynb"
+    output_path = output_dir / "claude-colab.ipynb"
     with open(output_path, "w") as f:
         json.dump(notebook, f, indent=2)
 

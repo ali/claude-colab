@@ -54,23 +54,27 @@ jobs:
           echo "Building release for version: $VERSION"
       
       - name: Create release archive
+        id: create_archive
         run: |
           VERSION="${{ steps.get_version.outputs.version }}"
-          ARCHIVE_NAME="claude-code-colab-bootstrap-${VERSION}.ipynb"
-          cp dist/claude_code_colab_bootstrap.ipynb "$ARCHIVE_NAME"
+          SHORT_SHA=$(git rev-parse --short HEAD)
+          ARCHIVE_NAME="claude-colab-${VERSION}-${SHORT_SHA}.ipynb"
+          cp dist/claude-colab.ipynb "$ARCHIVE_NAME"
           echo "archive_name=$ARCHIVE_NAME" >> $GITHUB_OUTPUT
+          echo "short_sha=$SHORT_SHA" >> $GITHUB_OUTPUT
       
       - name: Upload notebook to release
-        if: github.event_name == 'release' || (github.event_name == 'push' && startsWith(github.ref, 'refs/tags/'))
+        if: github.event_name == 'release' || github.event_name == 'workflow_dispatch' || (github.event_name == 'push' && startsWith(github.ref, 'refs/tags/'))
         uses: softprops/action-gh-release@v2
         with:
+          tag_name: ${{ steps.get_version.outputs.version }}
           files: |
-            claude-code-colab-bootstrap-${{ steps.get_version.outputs.version }}.ipynb
+            ${{ steps.create_archive.outputs.archive_name }}
           body: |
-            ## Claude Code Colab Bootstrap ${{ steps.get_version.outputs.version }}
-            
+            ## claude-colab ${{ steps.get_version.outputs.version }}
+
             ### Download
-            Download the notebook: [claude-code-colab-bootstrap-${{ steps.get_version.outputs.version }}.ipynb](./claude-code-colab-bootstrap-${{ steps.get_version.outputs.version }}.ipynb)
+            Download the notebook: [${{ steps.create_archive.outputs.archive_name }}](./${{ steps.create_archive.outputs.archive_name }})
             
             ### Quick Start
             1. Open the notebook in Google Colab
@@ -93,6 +97,6 @@ jobs:
         if: github.event_name == 'workflow_dispatch'
         uses: actions/upload-artifact@v6
         with:
-          name: claude-code-colab-bootstrap-${{ steps.get_version.outputs.version }}
-          path: claude-code-colab-bootstrap-${{ steps.get_version.outputs.version }}.ipynb
+          name: ${{ steps.create_archive.outputs.archive_name }}
+          path: ${{ steps.create_archive.outputs.archive_name }}
           retention-days: 30
