@@ -64,9 +64,12 @@ def build_notebook():
         agent_name = agent_file.stem
         agents[agent_name] = read_file(agent_file)
 
-    # Use JSON to safely serialize skills and agents (handles all escaping properly)
-    skills_json_str = json.dumps(skills, indent=2, sort_keys=True)
-    agents_json_str = json.dumps(agents, indent=2, sort_keys=True)
+    # Use JSON to safely serialize skills and agents
+    # We need to escape backslashes for embedding in triple-quoted Python strings
+    # json.dumps produces \n, but in '''...''' that becomes a real newline
+    # So we double-escape: \n -> \\n, which Python interprets as literal \n for json.loads
+    skills_json_str = json.dumps(skills, indent=2, sort_keys=True).replace("\\", "\\\\")
+    agents_json_str = json.dumps(agents, indent=2, sort_keys=True).replace("\\", "\\\\")
 
     # Replace placeholders in notebook cells
     for cell in notebook["cells"]:
