@@ -64,20 +64,9 @@ def build_notebook():
         agent_name = agent_file.stem
         agents[agent_name] = read_file(agent_file)
 
-    # Convert skills and agents to Python dict string format
-    def dict_to_python_string(d):
-        """Convert a dict to a Python string representation."""
-        items = []
-        # Sort keys for deterministic output
-        for key in sorted(d.keys()):
-            value = d[key]
-            # Escape the value for Python string
-            escaped_value = escape_for_python_string(value)
-            items.append(f"'{key}': '{escaped_value}'")
-        return "{" + ", ".join(items) + "}"
-
-    skills_dict_str = dict_to_python_string(skills)
-    agents_dict_str = dict_to_python_string(agents)
+    # Use JSON to safely serialize skills and agents (handles all escaping properly)
+    skills_json_str = json.dumps(skills, indent=2, sort_keys=True)
+    agents_json_str = json.dumps(agents, indent=2, sort_keys=True)
 
     # Replace placeholders in notebook cells
     for cell in notebook["cells"]:
@@ -100,8 +89,8 @@ def build_notebook():
                 escape_for_python_string(update_docs_script, use_triple_quotes=True),
             )
             source = source.replace("{{DOCS_MANIFEST_JSON}}", json.dumps(docs_manifest, indent=2))
-            source = source.replace("{{SKILLS_DICT}}", skills_dict_str)
-            source = source.replace("{{AGENTS_DICT}}", agents_dict_str)
+            source = source.replace("{{SKILLS_JSON}}", skills_json_str)
+            source = source.replace("{{AGENTS_JSON}}", agents_json_str)
 
             # Convert back to list format (each line is a string ending with \n except possibly the last)
             lines = source.split("\n")
