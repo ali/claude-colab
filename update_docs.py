@@ -13,16 +13,34 @@ from datetime import datetime
 from pathlib import Path
 
 
+def get_paths():
+    """Get manifest and cached_docs paths based on environment.
+
+    Supports two environments:
+    - Local development: src/docs_manifest.json, src/cached_docs/
+    - Colab workspace: docs_manifest.json, cached_docs/
+    """
+    # Check for local dev structure first
+    if Path("src/docs_manifest.json").exists():
+        return Path("src/docs_manifest.json"), Path("src/cached_docs")
+    # Fall back to workspace structure (Colab)
+    elif Path("docs_manifest.json").exists():
+        return Path("docs_manifest.json"), Path("cached_docs")
+    else:
+        # Default to local dev structure for new setups
+        return Path("src/docs_manifest.json"), Path("src/cached_docs")
+
+
 def read_manifest():
     """Read the docs manifest."""
-    manifest_path = Path("src/docs_manifest.json")
+    manifest_path, _ = get_paths()
     with open(manifest_path, "r") as f:
         return json.load(f)
 
 
 def write_manifest(manifest):
     """Write the docs manifest."""
-    manifest_path = Path("src/docs_manifest.json")
+    manifest_path, _ = get_paths()
     with open(manifest_path, "w") as f:
         json.dump(manifest, f, indent=2)
 
@@ -75,7 +93,7 @@ Sitemap: https://code.claude.com/docs/llms.txt
 def update_docs(force=False):
     """Update all documentation files."""
     manifest = read_manifest()
-    cached_docs_dir = Path("src/cached_docs")
+    _, cached_docs_dir = get_paths()
     cached_docs_dir.mkdir(parents=True, exist_ok=True)
 
     updated_count = 0
