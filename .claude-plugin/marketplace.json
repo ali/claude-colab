@@ -10,7 +10,7 @@
       "name": "claude-colab",
       "source": "./src/plugin",
       "description": "Complete toolkit for running Claude Code in Google Colab - includes skills, agents, hooks, and commands",
-      "version": "0.1.2"
+      "version": "0.2.0"
     }
   ]
 }
