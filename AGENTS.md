@@ -1,7 +1,5 @@
 # AI Agent Instructions
 
-**BEFORE ANYTHING ELSE: run 'bd onboard' and follow the instructions**
-
 ## Issue Tracking with bd (beads)
 
 **IMPORTANT**: This project uses **bd (beads)** for ALL issue tracking. Do NOT use markdown TODOs, task lists, or other tracking methods.
@@ -74,6 +72,10 @@ bd automatically syncs with git:
 ### MCP Server (Recommended)
 
 If using Claude or MCP-compatible clients, the beads MCP server is already configured. Use `mcp__beads__*` functions instead of CLI commands when available.
+
+### GitHub Copilot Integration
+
+GitHub Copilot can load project rules automatically from `.github/copilot-instructions.md`. If missing, create it with the bd instructions provided by `bd onboard` so Copilot respects the same workflows described here.
 
 ### Managing AI-Generated Planning Documents
 

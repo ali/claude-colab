@@ -3,6 +3,7 @@ Tests for the built notebook.
 
 Validates structure, content, and optionally executes the notebook.
 """
+
 import json
 import re
 from pathlib import Path
@@ -175,21 +176,15 @@ class TestNotebookContent:
         all_code = "\n".join(code_sources)
 
         # Check for markdown formatter
-        markdown_match = re.search(
-            r"markdown_formatter\s*=\s*'''(.*?)'''", all_code, re.DOTALL
-        )
+        markdown_match = re.search(r"markdown_formatter\s*=\s*'''(.*?)'''", all_code, re.DOTALL)
         assert markdown_match, "markdown_formatter hook not found"
         assert len(markdown_match.group(1).strip()) > 0, (
             "markdown_formatter hook should not be empty"
         )
 
         # Check for statusline
-        statusline_match = re.search(
-            r"statusline_script\s*=\s*'''(.*?)'''", all_code, re.DOTALL
-        )
+        statusline_match = re.search(r"statusline_script\s*=\s*'''(.*?)'''", all_code, re.DOTALL)
         assert statusline_match, "statusline_script hook not found"
         assert len(statusline_match.group(1).strip()) > 0, (
             "statusline_script hook should not be empty"
         )
-
-
