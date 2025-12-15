@@ -50,6 +50,36 @@
       "url": "https://code.claude.com/docs/en/slash-commands.md",
       "title": "Slash Commands",
       "description": "Control Claude's behavior during an interactive session with slash commands"
+    },
+    {
+      "filename": "mcp.md",
+      "url": "https://code.claude.com/docs/en/mcp.md",
+      "title": "Model Context Protocol",
+      "description": "MCP server configuration, adding tools, and extending Claude's capabilities"
+    },
+    {
+      "filename": "sub-agents.md",
+      "url": "https://code.claude.com/docs/en/sub-agents.md",
+      "title": "Subagents",
+      "description": "Creating and managing subagents for specialized tasks and parallel workflows"
+    },
+    {
+      "filename": "skills.md",
+      "url": "https://code.claude.com/docs/en/skills.md",
+      "title": "Agent Skills",
+      "description": "Defining reusable skills and capabilities for Claude Code agents"
+    },
+    {
+      "filename": "memory.md",
+      "url": "https://code.claude.com/docs/en/memory.md",
+      "title": "Memory Management",
+      "description": "CLAUDE.md files, project memory, and persistent context management"
+    },
+    {
+      "filename": "common-workflows.md",
+      "url": "https://code.claude.com/docs/en/common-workflows.md",
+      "title": "Common Workflows",
+      "description": "Step-by-step guides for common development workflows with Claude Code"
     }
   ]
 }
