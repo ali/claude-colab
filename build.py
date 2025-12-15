@@ -6,7 +6,7 @@ Reads src/bootstrap_template.ipynb and replaces placeholders with
 version info and configuration, then generates dist/claude-colab.ipynb.
 
 The new architecture uses the plugin system - skills, agents, hooks, and
-commands are provided by the colab-toolkit plugin from this repo's marketplace.
+commands are provided by the claude-colab plugin from this repo's marketplace.
 """
 
 import json
@@ -70,7 +70,7 @@ def update_marketplace_version(version):
         with open(marketplace_json_path) as f:
             marketplace_data = json.load(f)
         for plugin in marketplace_data.get("plugins", []):
-            if plugin.get("name") == "colab-toolkit":
+            if plugin.get("name") == "claude-colab":
                 plugin["version"] = version
         with open(marketplace_json_path, "w") as f:
             json.dump(marketplace_data, f, indent=2)
@@ -136,7 +136,7 @@ def build_notebook():
     command_count = len(list(commands_dir.glob("*.md"))) if commands_dir.exists() else 0
 
     print(f"\n✓ Built {output_path}")
-    print(f"  Plugin: colab-toolkit v{version}")
+    print(f"  Plugin: claude-colab v{version}")
     print(f"  - {skill_count} skills")
     print(f"  - {agent_count} agents")
     print(f"  - {command_count} commands")

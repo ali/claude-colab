@@ -1,5 +1,5 @@
 {
-  "name": "colab-toolkit",
+  "name": "claude-colab",
   "version": "0.1.2",
   "description": "Complete toolkit for running Claude Code in Google Colab",
   "author": {

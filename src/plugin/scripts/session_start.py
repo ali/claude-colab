@@ -112,9 +112,9 @@ def main():
     # Update notification (if available)
     if latest_version and compare_versions(current_version, latest_version):
         output_lines.append(
-            f"\033[33m✨ colab-toolkit update available: v{current_version} → v{latest_version}\033[0m"
+            f"\033[33m✨ claude-colab update available: v{current_version} → v{latest_version}\033[0m"
         )
-        output_lines.append("\033[33m   Run: /plugin update colab-toolkit\033[0m")
+        output_lines.append("\033[33m   Run: /plugin update claude-colab\033[0m")
         if release_url:
             output_lines.append(f"\033[33m   Release: {release_url}\033[0m")
 

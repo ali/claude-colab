@@ -3,12 +3,12 @@ description: Check for and display available plugin updates
 allowed-tools: Bash, Read
 ---
 
-Check for updates to the colab-toolkit plugin:
+Check for updates to the claude-colab plugin:
 
 1. **Get current version**
    ```bash
    # From plugin.json if available
-   cat ~/.claude/plugins/*/colab-toolkit/.claude-plugin/plugin.json 2>/dev/null | python3 -c "import sys,json; print(json.load(sys.stdin).get('version', 'unknown'))" || echo "unknown"
+   cat ~/.claude/plugins/*/claude-colab/.claude-plugin/plugin.json 2>/dev/null | python3 -c "import sys,json; print(json.load(sys.stdin).get('version', 'unknown'))" || echo "unknown"
    ```
 
 2. **Check GitHub for latest release**
@@ -17,7 +17,7 @@ Check for updates to the colab-toolkit plugin:
    ```
 
 3. **Compare and report**
-   - If update available, show: `/plugin update colab-toolkit`
+   - If update available, show: `/plugin update claude-colab`
    - If up to date, confirm current version
    - Show release notes URL if available
 

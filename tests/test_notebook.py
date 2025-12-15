@@ -4,7 +4,7 @@ Tests for the built notebook.
 Validates structure, content, and plugin marketplace configuration.
 
 The new architecture uses the plugin system - skills, agents, hooks, and
-commands are provided by the colab-toolkit plugin from this repo's marketplace.
+commands are provided by the claude-colab plugin from this repo's marketplace.
 """
 
 import json
@@ -24,7 +24,7 @@ REQUIRED_CONTENT_PATTERNS = [
     (r"BOOTSTRAP_VERSION\s*=\s*\"[\d.]+\"", "Bootstrap version"),
     (r"extraKnownMarketplaces", "Marketplace configuration"),
     (r"enabledPlugins", "Enabled plugins"),
-    (r"colab-toolkit@claude-colab", "Plugin reference"),
+    (r"claude-colab@claude-colab", "Plugin reference"),
 ]
 
 
@@ -119,7 +119,7 @@ class TestNotebookContent:
         assert "github" in all_code, "GitHub source type not found"
 
     def test_plugin_enabled(self, notebook):
-        """Test that colab-toolkit plugin is enabled."""
+        """Test that claude-colab plugin is enabled."""
         code_sources = []
         for cell in notebook["cells"]:
             if cell["cell_type"] == "code":
@@ -129,7 +129,7 @@ class TestNotebookContent:
         all_code = "\n".join(code_sources)
 
         assert "enabledPlugins" in all_code, "enabledPlugins not found"
-        assert "colab-toolkit@claude-colab" in all_code, "Plugin not enabled"
+        assert "claude-colab@claude-colab" in all_code, "Plugin not enabled"
 
     def test_version_is_valid(self, notebook):
         """Test that version number is valid semver."""
@@ -185,7 +185,7 @@ class TestPluginStructure:
 
         assert "name" in plugin, "Plugin missing 'name' field"
         assert "version" in plugin, "Plugin missing 'version' field"
-        assert plugin["name"] == "colab-toolkit", "Plugin name should be 'colab-toolkit'"
+        assert plugin["name"] == "claude-colab", "Plugin name should be 'claude-colab'"
 
     def test_marketplace_json_exists(self):
         """Test that marketplace.json exists."""
