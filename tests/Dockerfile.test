@@ -3,22 +3,12 @@
 
 FROM python:3.11-slim
 
-# Install system dependencies that the notebook expects
-RUN apt-get update && apt-get install -y \
-    socat \
-    bubblewrap \
-    git \
-    curl \
-    && rm -rf /var/lib/apt/lists/*
+# Single layer: system deps + Python packages
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    socat bubblewrap git curl ca-certificates \
+    && rm -rf /var/lib/apt/lists/* \
+    && pip install --no-cache-dir nbconvert ipykernel \
+    && rm -rf /root/.cache
 
-# Install Jupyter and nbconvert for executing notebooks
-RUN pip install --no-cache-dir \
-    jupyter \
-    nbconvert \
-    ipykernel
-
-# Set working directory
 WORKDIR /workspace
-
-# Default command (can be overridden)
 CMD ["python", "--version"]

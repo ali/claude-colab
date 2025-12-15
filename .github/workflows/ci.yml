@@ -7,33 +7,6 @@ on:
     branches: [main, master]
 
 jobs:
-  lint-and-format:
-    name: Lint and Format Check
-    runs-on: ubuntu-latest
-    
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v6
-      
-      - name: Install uv
-        uses: astral-sh/setup-uv@v7
-        with:
-          version: "latest"
-      
-      - name: Set up Python
-        uses: actions/setup-python@v6
-        with:
-          python-version: "3.11"
-      
-      - name: Install dependencies
-        run: uv sync
-      
-      - name: Check formatting with ruff format
-        run: uv run ruff format --check .
-      
-      - name: Lint with ruff check
-        run: uv run ruff check .
-  
   build:
     name: Build Notebook
     runs-on: ubuntu-latest
@@ -46,6 +19,7 @@ jobs:
         uses: astral-sh/setup-uv@v7
         with:
           version: "latest"
+          enable-cache: true
       
       - name: Set up Python
         uses: actions/setup-python@v6
@@ -54,6 +28,12 @@ jobs:
       
       - name: Install dependencies
         run: uv sync --extra dev
+      
+      - name: Check formatting with ruff format
+        run: uv run ruff format --check .
+      
+      - name: Lint with ruff check
+        run: uv run ruff check .
       
       - name: Build notebook
         run: uv run python build.py
@@ -82,21 +62,34 @@ jobs:
             exit 1
           fi
           echo "✓ No uncommitted changes after build"
+      
+      - name: Upload notebook artifact
+        uses: actions/upload-artifact@v6
+        with:
+          name: notebook
+          path: claude_code_colab_bootstrap.ipynb
+          retention-days: 1
   
   test-execution:
     name: Test Notebook Execution (Docker)
     runs-on: ubuntu-latest
-    # Only run if Docker tests are explicitly enabled or on main branch
+    needs: build
     if: github.ref == 'refs/heads/main' || github.event_name == 'pull_request'
     
     steps:
       - name: Checkout code
         uses: actions/checkout@v6
       
+      - name: Download notebook artifact
+        uses: actions/download-artifact@v6
+        with:
+          name: notebook
+      
       - name: Install uv
         uses: astral-sh/setup-uv@v7
         with:
           version: "latest"
+          enable-cache: true
       
       - name: Set up Python
         uses: actions/setup-python@v6
@@ -109,20 +102,19 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
       
-      - name: Build notebook
-        run: uv run python build.py
+      - name: Build Docker image with cache
+        uses: docker/build-push-action@v6
+        with:
+          context: ./tests
+          file: ./tests/Dockerfile.test
+          tags: claude-colab-test:latest
+          load: true
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
       
       - name: Run Docker execution tests
         run: |
-          # Check if Docker is available
-          if ! command -v docker &> /dev/null; then
-            echo "⚠️ Docker not available, skipping execution tests"
-            exit 0
-          fi
-          
-          # Run tests (excluding Docker tests if Docker isn't working)
           uv run pytest tests/test_notebook_execution.py -v -m docker || {
             echo "⚠️ Docker execution tests failed or Docker unavailable"
-            echo "This is expected if Docker is not available in CI"
-            exit 0  # Don't fail the build
+            exit 0
           }

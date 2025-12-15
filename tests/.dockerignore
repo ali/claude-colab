@@ -1,0 +1,3 @@
+# Only copy what's needed for Docker build
+*
+!Dockerfile.test
