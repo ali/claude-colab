@@ -23,7 +23,7 @@ EXPECTED_PLACEHOLDERS = [
 
 # Required content patterns that should exist in the built notebook
 REQUIRED_CONTENT_PATTERNS = [
-    (r"GUIDE\s*=\s*'''", "Guide content variable"),
+    (r"GUIDE\s*=\s*\"\"\"", "Guide content variable"),
     (r"SKILLS\s*=\s*\{", "Skills dictionary"),
     (r"AGENTS\s*=\s*\{", "Agents dictionary"),
     (r"markdown_formatter\s*=\s*'''", "Markdown formatter hook"),
@@ -158,8 +158,8 @@ class TestNotebookContent:
 
         all_code = "\n".join(code_sources)
 
-        # Find GUIDE = '''...''' pattern
-        guide_match = re.search(r"GUIDE\s*=\s*'''(.*?)'''", all_code, re.DOTALL)
+        # Find GUIDE = """...""" pattern
+        guide_match = re.search(r'GUIDE\s*=\s*"""(.*?)"""', all_code, re.DOTALL)
         assert guide_match, "GUIDE content not found"
         guide_content = guide_match.group(1)
         assert len(guide_content.strip()) > 0, "GUIDE content should not be empty"
