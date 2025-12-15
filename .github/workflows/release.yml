@@ -74,7 +74,7 @@ jobs:
             ## claude-colab ${{ steps.get_version.outputs.version }}
 
             ### Download
-            Download the notebook: [${{ steps.create_archive.outputs.archive_name }}](./${{ steps.create_archive.outputs.archive_name }})
+            Download the notebook: [${{ steps.create_archive.outputs.archive_name }}](https://github.com/${{ github.repository }}/releases/download/${{ steps.get_version.outputs.version }}/${{ steps.create_archive.outputs.archive_name }})
             
             ### Quick Start
             1. Open the notebook in Google Colab
