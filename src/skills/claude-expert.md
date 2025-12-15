@@ -13,6 +13,11 @@ For detailed information, reference these cached documentation files:
 - @src/cached_docs/plugins-reference.md - Complete technical reference for plugin system
 - @src/cached_docs/cli-reference.md - Complete CLI command reference
 - @src/cached_docs/slash-commands.md - Slash commands reference
+- @src/cached_docs/mcp.md - Model Context Protocol integration
+- @src/cached_docs/sub-agents.md - Subagents for parallel work
+- @src/cached_docs/skills.md - Custom skills system
+- @src/cached_docs/memory.md - Memory and context management
+- @src/cached_docs/common-workflows.md - Common workflows and patterns
 
 **To update documentation:**
 - Run `python3 update_docs.py` (local) or use the "Update Documentation" cell in the notebook
