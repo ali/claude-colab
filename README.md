@@ -1,17 +1,36 @@
-# claude-collab
+# claude-colab
 
-Claude Code for Google Colab
+Claude Code for Google Colab — bootstrap a notebook, bring your own repo/notebook, and let Claude maintain the environment (and the notebook) as it runs.
 
-Self-bootstrapping notebook that installs Claude Code in Google Colab and sets up a complete development environment with skills, agents, hooks, and status line.
+`claude-colab` ships a self-bootstrapping Colab notebook that installs Claude Code and sets up a complete development environment with skills, agents, hooks, and a status line. It’s built for a few high-value workflows:
+
+- **Bootstrap fast**: turn a fresh Colab runtime into a working `claude` terminal in minutes.
+- **Edit real projects**: upload a repo/notebook (or `git clone`) and have Claude edit files and run commands directly in Colab.
+- **Self-improve**: the notebook copies its own source into the workspace and includes customization skills plus a cached Claude Code docs bundle, so Claude can customize and maintain the setup while it’s running.
 
 ## Quick Start
 
 1. **Download the notebook** from the [latest release](https://github.com/ali/claude-colab/releases/latest)
 2. Open the downloaded notebook in Google Colab
-3. Get your auth token: `claude login --print-token` (on your local machine)
-4. Add token to Colab Secrets as `CLAUDE_CODE_TOKEN`
+3. Get your auth token: `claude login --print-token` (anywhere you have Claude Code installed)
+4. Add the token to Colab Secrets as `CLAUDE_CODE_TOKEN` (recommended; don’t paste it into a cell)
 5. Run all cells
 6. Open terminal and run `claude`
+
+## Common Workflows
+
+- **Use ephemeral or persistent workspaces**: run in ephemeral mode by default, or enable Google Drive mode in the notebook to keep your workspace between sessions.
+- **Edit a repo you upload**: upload a zip in Colab, unzip it in the workspace, `cd` into it, then run `claude` and ask it to run tests/fix bugs/refactor.
+- **Edit notebooks**: keep notebooks in the workspace and use the built-in `ipynb` skill to create/edit `.ipynb` files safely.
+- **Customize/self-maintain the notebook**: Claude can edit `bootstrap_config.json` and `_bootstrap_source.ipynb` in your workspace; re-run the notebook to apply changes.
+- **Use cached docs as context**: run the “Update Documentation” cell to populate `src/cached_docs/` used by the `claude-expert` skill.
+
+### Included Skills & Agents
+
+- Skills: `customize`, `ipynb`, `skill-builder`, `claude-expert`
+- Agents: `notebook-doctor`, `colab`
+
+For more details, see `src/guide.md`.
 
 ## Development
 
@@ -46,9 +65,9 @@ source .venv/bin/activate  # or: uv run <command>
 ### Updating Documentation
 
 ```bash
-uv run update-docs
-# or
 uv run python update_docs.py
+# or
+uv run ./update_docs.py
 ```
 
 ## Issue Tracking with Beads
